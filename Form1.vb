@@ -3,14 +3,19 @@ Imports System.Threading.Tasks
 Imports CoreXC_Reborn.GMapTileHelperLib
 Imports GMap.NET
 Imports GMap.NET.WindowsForms
+Imports System.Net.NetworkInformation
 Imports GMap.NET.MapProviders
 
 
 Public Class Form1
 
     Dim gmap As GMapControl
+    Dim appFolder As String = Application.StartupPath
+    Private imageToDraw As Image = Nothing
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         AddHandler ChannelAnalyzer.SelectedIndexChanged, AddressOf TabControl_SelectedIndexChanged
+        appFolder += "\download"
 
     End Sub
 
@@ -25,19 +30,35 @@ Public Class Form1
 
         If ChannelAnalyzer.SelectedTab Is TabPage3 OrElse ChannelAnalyzer.SelectedTab Is TabPage4 Then
 
-            If (gmap Is Nothing) Then
-                gmap = Await GMapHelper.CreateMapControl(0, 0, 10)
-            End If
-            If ChannelAnalyzer.SelectedTab Is TabPage3 Then
-                GroupBox24.Controls.Add(gmap)
-            End If
+            If IsOnlineWithPing() Then
+                If (gmap Is Nothing) Then
+                    gmap = Await GMapHelper.CreateMapControl(0, 0, 10)
+                End If
 
-            If ChannelAnalyzer.SelectedTab Is TabPage4 Then
-                GroupBox26.Controls.Add(gmap)
-            End If
+                If Not (gmap Is Nothing) Then
+                    If ChannelAnalyzer.SelectedTab Is TabPage3 Then
+                        GroupBox24.Controls.Add(gmap)
+                    End If
 
+                    If ChannelAnalyzer.SelectedTab Is TabPage4 Then
+                        GroupBox26.Controls.Add(gmap)
+                    End If
+
+                End If
+
+            End If
         End If
     End Sub
+
+    Public Function IsOnlineWithPing() As Boolean
+        Try
+            Dim ping As New Ping()
+            Dim reply = ping.Send("8.8.8.8", 1000) ' Google's DNS
+            Return reply.Status = IPStatus.Success
+        Catch
+            Return False
+        End Try
+    End Function
     Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
 
     End Sub
@@ -55,12 +76,13 @@ Public Class Form1
     End Sub
 
     Private Sub downloader1_Click(sender As Object, e As EventArgs) Handles downloader1.Click
-        Dim folder = "C:\MyMap\Tiles"
-        If Not IO.Directory.Exists(folder) Then IO.Directory.CreateDirectory(folder)
+        'Dim folder = "C:\MyMap\Tiles"
+        If Not IO.Directory.Exists(appFolder) Then IO.Directory.CreateDirectory(appFolder)
+
 
         'Thunderforest API key
         Dim apiKey = "9488d8f1f44142489555183db1934dc7"
-        DownloadTiles(gmap.Position.Lat - 0.02, gmap.Position.Lng - 0.02, gmap.Position.Lat + 0.02, gmap.Position.Lng + 0.02, gmap.MinZoom, gmap.MaxZoom, folder, apiKey)
+        DownloadTiles(gmap.Position.Lat - 0.02, gmap.Position.Lng - 0.02, gmap.Position.Lat + 0.02, gmap.Position.Lng + 0.02, gmap.MinZoom, gmap.MaxZoom, appFolder, apiKey)
 
     End Sub
 
@@ -83,6 +105,18 @@ Public Class Form1
         Next
     End Sub
     Private Sub CurrentDownloadTiles(gmap As GMap.NET.WindowsForms.GMapControl, savePath As String)
+
+        Dim latValue As Double
+        Dim lonValue As Double
+        Dim fileName As String
+
+        If Not (Double.TryParse(lat.Text, latValue)) Then
+            latValue = 0
+        End If
+        If Not (Double.TryParse(lon.Text, lonValue)) Then
+            lonValue = 0
+        End If
+        fileName = lat.Text + "-" + lon.Text + ".png"
         ' Create a bitmap with the same size as the control
         Dim bmp As New Bitmap(gmap.Width, gmap.Height)
 
@@ -90,10 +124,10 @@ Public Class Form1
         gmap.DrawToBitmap(bmp, New Rectangle(0, 0, gmap.Width, gmap.Height))
 
         ' Save the bitmap to a file (e.g., PNG)
-        Dim saveFilePath As String = IO.Path.Combine(savePath, "map_view.png")
+        Dim saveFilePath As String = IO.Path.Combine(savePath, fileName)
         bmp.Save(saveFilePath, System.Drawing.Imaging.ImageFormat.Png)
 
-        MessageBox.Show("Map saved to: " & savePath)
+        MessageBox.Show("Map saved to: " & saveFilePath)
 
 
     End Sub
@@ -139,8 +173,46 @@ Public Class Form1
 
     Private Sub Offlineview_Click(sender As Object, e As EventArgs) Handles ScreenShot.Click
 
-        Dim folder = "C:\MyMap\screenshot"
-        If Not IO.Directory.Exists(folder) Then IO.Directory.CreateDirectory(folder)
-        CurrentDownloadTiles(gmap, folder)
+        'Dim folder = "C:\MyMap\screenshot"
+        If Not IO.Directory.Exists(appFolder) Then IO.Directory.CreateDirectory(appFolder)
+        CurrentDownloadTiles(gmap, appFolder)
     End Sub
+
+    Private Async Sub viewmap_Click(sender As Object, e As EventArgs) Handles viewmap.Click
+
+        Dim latValue As Double
+        Dim lonValue As Double
+
+        GroupBox24.Controls.Remove(gmap)
+        If Not (Double.TryParse(lat.Text, latValue)) Then
+            latValue = 0
+        End If
+        If Not (Double.TryParse(lon.Text, lonValue)) Then
+            lonValue = 0
+        End If
+
+        If IsOnlineWithPing() Then
+
+            gmap = Await GMapHelper.CreateMapControl(latValue, lonValue, 10)
+            GroupBox24.Controls.Add(gmap)
+        Else
+
+            Dim fileName = appFolder + "\" + lat.Text + "-" + lon.Text + ".png"
+
+            imageToDraw = Image.FromFile(fileName)
+            GroupBox24.Invalidate()
+
+        End If
+
+    End Sub
+    Private Sub GroupBox24_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox24.Paint
+        If imageToDraw IsNot Nothing Then
+            Dim g As Graphics = e.Graphics
+            Dim w As Integer = GroupBox24.ClientSize.Width - 10
+            Dim h As Integer = GroupBox24.ClientSize.Height - 10
+            g.DrawImage(imageToDraw, 5, 5, w, h)
+        End If
+    End Sub
+
+
 End Class

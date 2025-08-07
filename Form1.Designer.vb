@@ -23,9 +23,9 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend4 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.ChannelAnalyzer = New System.Windows.Forms.TabControl()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -439,6 +439,9 @@ Partial Class Form1
         Me.Button6 = New System.Windows.Forms.Button()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.lon = New System.Windows.Forms.TextBox()
+        Me.viewmap = New System.Windows.Forms.Button()
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.ScreenShot = New System.Windows.Forms.Button()
         Me.downloader1 = New System.Windows.Forms.Button()
         Me.GroupBox24 = New System.Windows.Forms.GroupBox()
@@ -475,7 +478,9 @@ Partial Class Form1
         Me.GroupBox46 = New System.Windows.Forms.GroupBox()
         Me.GroupBox45 = New System.Windows.Forms.GroupBox()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
+        Me.Longitude = New System.Windows.Forms.Label()
+        Me.Label114 = New System.Windows.Forms.Label()
+        Me.lat = New System.Windows.Forms.TextBox()
         Me.ChannelAnalyzer.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox31.SuspendLayout()
@@ -4923,6 +4928,11 @@ Partial Class Form1
         'TabPage3
         '
         Me.TabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.TabPage3.Controls.Add(Me.lat)
+        Me.TabPage3.Controls.Add(Me.Label114)
+        Me.TabPage3.Controls.Add(Me.Longitude)
+        Me.TabPage3.Controls.Add(Me.lon)
+        Me.TabPage3.Controls.Add(Me.viewmap)
         Me.TabPage3.Controls.Add(Me.ProgressBar1)
         Me.TabPage3.Controls.Add(Me.ScreenShot)
         Me.TabPage3.Controls.Add(Me.downloader1)
@@ -4938,31 +4948,54 @@ Partial Class Form1
         Me.TabPage3.Text = "Scanning Progress"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'lon
+        '
+        Me.lon.Location = New System.Drawing.Point(1261, 347)
+        Me.lon.Name = "lon"
+        Me.lon.Size = New System.Drawing.Size(76, 22)
+        Me.lon.TabIndex = 7
+        '
+        'viewmap
+        '
+        Me.viewmap.Location = New System.Drawing.Point(1517, 343)
+        Me.viewmap.Name = "viewmap"
+        Me.viewmap.Size = New System.Drawing.Size(82, 29)
+        Me.viewmap.TabIndex = 6
+        Me.viewmap.Text = "View"
+        Me.viewmap.UseVisualStyleBackColor = True
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(1810, 359)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(51, 10)
+        Me.ProgressBar1.TabIndex = 5
+        '
         'ScreenShot
         '
-        Me.ScreenShot.Location = New System.Drawing.Point(1275, 518)
+        Me.ScreenShot.Location = New System.Drawing.Point(1603, 342)
         Me.ScreenShot.Name = "ScreenShot"
-        Me.ScreenShot.Size = New System.Drawing.Size(110, 30)
+        Me.ScreenShot.Size = New System.Drawing.Size(93, 30)
         Me.ScreenShot.TabIndex = 4
-        Me.ScreenShot.Text = "Save a map"
+        Me.ScreenShot.Text = "Save"
         Me.ScreenShot.UseVisualStyleBackColor = True
         '
         'downloader1
         '
-        Me.downloader1.Location = New System.Drawing.Point(1391, 518)
+        Me.downloader1.Location = New System.Drawing.Point(1700, 343)
         Me.downloader1.Name = "downloader1"
-        Me.downloader1.Size = New System.Drawing.Size(111, 30)
+        Me.downloader1.Size = New System.Drawing.Size(101, 30)
         Me.downloader1.TabIndex = 3
-        Me.downloader1.Text = "Save maptiles"
+        Me.downloader1.Text = "DownLoad"
         Me.downloader1.UseVisualStyleBackColor = True
         '
         'GroupBox24
         '
-        Me.GroupBox24.Location = New System.Drawing.Point(1179, 548)
+        Me.GroupBox24.Location = New System.Drawing.Point(1177, 373)
         Me.GroupBox24.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GroupBox24.Name = "GroupBox24"
         Me.GroupBox24.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.GroupBox24.Size = New System.Drawing.Size(686, 397)
+        Me.GroupBox24.Size = New System.Drawing.Size(686, 495)
         Me.GroupBox24.TabIndex = 2
         Me.GroupBox24.TabStop = False
         Me.GroupBox24.Text = "Route Map"
@@ -4974,7 +5007,7 @@ Partial Class Form1
         Me.GroupBox23.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.GroupBox23.Name = "GroupBox23"
         Me.GroupBox23.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.GroupBox23.Size = New System.Drawing.Size(686, 502)
+        Me.GroupBox23.Size = New System.Drawing.Size(686, 322)
         Me.GroupBox23.TabIndex = 1
         Me.GroupBox23.TabStop = False
         Me.GroupBox23.Text = "Chart Scanning Result Bar"
@@ -4982,21 +5015,21 @@ Partial Class Form1
         'Chart1
         '
         Me.Chart1.BorderSkin.SkinStyle = System.Windows.Forms.DataVisualization.Charting.BorderSkinStyle.Emboss
-        ChartArea3.AxisX.Title = "Base Station Channel Number"
-        ChartArea3.AxisY.Title = "Scanned Counter"
-        ChartArea3.BackColor = System.Drawing.Color.White
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
-        Legend3.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend3)
+        ChartArea4.AxisX.Title = "Base Station Channel Number"
+        ChartArea4.AxisY.Title = "Scanned Counter"
+        ChartArea4.BackColor = System.Drawing.Color.White
+        ChartArea4.Name = "ChartArea1"
+        Me.Chart1.ChartAreas.Add(ChartArea4)
+        Legend4.Name = "Legend1"
+        Me.Chart1.Legends.Add(Legend4)
         Me.Chart1.Location = New System.Drawing.Point(5, 21)
         Me.Chart1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.Chart1.Name = "Chart1"
-        Series3.ChartArea = "ChartArea1"
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
-        Me.Chart1.Size = New System.Drawing.Size(676, 481)
+        Series4.ChartArea = "ChartArea1"
+        Series4.Legend = "Legend1"
+        Series4.Name = "Series1"
+        Me.Chart1.Series.Add(Series4)
+        Me.Chart1.Size = New System.Drawing.Size(676, 301)
         Me.Chart1.TabIndex = 0
         Me.Chart1.Text = "Chart1"
         '
@@ -5297,12 +5330,30 @@ Partial Class Form1
         Me.TabPage6.Text = "Application Setting"
         Me.TabPage6.UseVisualStyleBackColor = True
         '
-        'ProgressBar1
+        'Longitude
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(1508, 533)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(352, 10)
-        Me.ProgressBar1.TabIndex = 5
+        Me.Longitude.AutoSize = True
+        Me.Longitude.Location = New System.Drawing.Point(1188, 350)
+        Me.Longitude.Name = "Longitude"
+        Me.Longitude.Size = New System.Drawing.Size(66, 16)
+        Me.Longitude.TabIndex = 8
+        Me.Longitude.Text = "Longitude"
+        '
+        'Label114
+        '
+        Me.Label114.AutoSize = True
+        Me.Label114.Location = New System.Drawing.Point(1345, 351)
+        Me.Label114.Name = "Label114"
+        Me.Label114.Size = New System.Drawing.Size(54, 16)
+        Me.Label114.TabIndex = 9
+        Me.Label114.Text = "Latitude"
+        '
+        'lat
+        '
+        Me.lat.Location = New System.Drawing.Point(1405, 347)
+        Me.lat.Name = "lat"
+        Me.lat.Size = New System.Drawing.Size(86, 22)
+        Me.lat.TabIndex = 10
         '
         'Form1
         '
@@ -5400,6 +5451,7 @@ Partial Class Form1
         Me.GroupBox9.PerformLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
         Me.GroupBox23.ResumeLayout(False)
         CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox22.ResumeLayout(False)
@@ -5862,4 +5914,9 @@ Partial Class Form1
     Friend WithEvents downloader1 As Button
     Friend WithEvents ScreenShot As Button
     Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents viewmap As Button
+    Friend WithEvents lon As TextBox
+    Friend WithEvents Longitude As Label
+    Friend WithEvents lat As TextBox
+    Friend WithEvents Label114 As Label
 End Class
