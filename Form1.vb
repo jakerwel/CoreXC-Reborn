@@ -1,4 +1,5 @@
 ﻿Imports System.Net
+Imports System.IO
 Imports System.Threading.Tasks
 Imports CoreXC_Reborn.GMapTileHelperLib
 Imports GMap.NET
@@ -76,8 +77,9 @@ Public Class Form1
     End Sub
 
     Private Sub downloader1_Click(sender As Object, e As EventArgs) Handles downloader1.Click
-        'Dim folder = "C:\MyMap\Tiles"
-        If Not IO.Directory.Exists(appFolder) Then IO.Directory.CreateDirectory(appFolder)
+
+        Dim folder = appFolder + "\tiles"
+        If Not IO.Directory.Exists(folder) Then IO.Directory.CreateDirectory(folder)
 
 
         'Thunderforest API key
@@ -199,8 +201,13 @@ Public Class Form1
 
             Dim fileName = appFolder + "\" + lat.Text + "-" + lon.Text + ".png"
 
-            imageToDraw = Image.FromFile(fileName)
-            GroupBox24.Invalidate()
+            If File.Exists(fileName) Then
+
+                imageToDraw = Image.FromFile(fileName)
+                GroupBox24.Invalidate()
+            Else
+                MsgBox("Now offline state and not found saved map file.")
+            End If
 
         End If
 
